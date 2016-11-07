@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 import com.sendgrid.*;
+import java.sql.*;
 /**
  *
  * @author Yusef
@@ -46,7 +47,7 @@ public class Third extends HttpServlet {
                     && message != null && !message.isEmpty()){
                 //Create class object and use to send mail via sendgrid
                 Third sender = new Third();
-                sender.sendMail(name, email, message);
+                out.print(sender.sendMail(name, email, message));
 
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
@@ -62,8 +63,7 @@ public class Third extends HttpServlet {
      *
      * @param name the person to send the email to/the subject header
      * @param email the email address to which the mail is directed
-     * @param message the content of the email
-     * @return details 
+     * @param message the content of the email 
      * @throws IOException if an I/O error occurs
      */
     public String sendMail(String name, String email, String message) throws IOException{    
@@ -76,22 +76,47 @@ public class Third extends HttpServlet {
         Content content = new Content("text/plain", message);
         Mail mail = new Mail(from, subject, to, content);
         
-        //TODO: Keep API Key private
-        //SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
-        //SendGrid sg = new SendGrid("");
-        Request request = new Request();
-        String details = "None";
-        try {
-            request.method = Method.POST;
-            request.endpoint = "mail/send";
-            request.body = mail.build();
-            Response response = sg.api(request);
-            details = response.statusCode + ' ' + response.body + ' '
-                    + response.headers;
-          } catch (IOException ex) {
-            throw ex;
-          }
-        return details;
+        //Create MySQL connection
+        String API_Key = "";
+        try{
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myURL = "jdbc:mysql://contactformdb.csw5ig1hapkg.us-west-1.rds.amazonaws.com:3306/ContactFormDB?zeroDateTimeBehavior=convertToNull";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myURL, "yusef", "abouremeleh");
+            Statement stmt = conn.createStatement();
+
+            //Retrieve SendGrid API Key from database
+            String query = "SELECT * FROM api_keys WHERE service='sendgrid'";
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                API_Key = rs.getString("key");
+            }
+            rs.close();
+            
+            //Send mail
+            SendGrid sg = new SendGrid(API_Key);
+            Request request = new Request();
+            String details = "None";
+            try {
+                request.method = Method.POST;
+                request.endpoint = "mail/send";
+                request.body = mail.build();
+                Response response = sg.api(request);
+                details = response.statusCode + ' ' + response.body + ' '
+                        + response.headers;
+              } catch (IOException ex) {
+                throw ex;
+              }
+            
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }
+        //Remove this later
+        return "end";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
