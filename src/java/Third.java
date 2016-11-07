@@ -78,7 +78,7 @@ public class Third extends HttpServlet {
         
         //TODO: Keep API Key private
         //SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
-        SendGrid sg = new SendGrid("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");
+        //SendGrid sg = new SendGrid("");
         Request request = new Request();
         String details = "None";
         try {
