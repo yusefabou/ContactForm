@@ -8,6 +8,10 @@
         <servlet-name>Second</servlet-name>
         <servlet-class>Second</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Third</servlet-name>
+        <servlet-class>Third</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>First</servlet-name>
         <url-pattern>/First</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Second</servlet-name>
         <url-pattern>/Second</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Third</servlet-name>
+        <url-pattern>/Third</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

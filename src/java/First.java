@@ -41,7 +41,7 @@ public class First extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("Second");
                 rd.forward(request,response);           
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher("index.html");
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
                 rd.include(request,response);
             }            
         } finally {

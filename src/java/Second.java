@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 
-/**
+/** 
  *
  * @author Yusef
  */
@@ -36,12 +36,13 @@ public class Second extends HttpServlet {
         HttpSession session = request.getSession(false);
         
         try {
-            if(session != null){
-                 out.print("<h4>Welcome " + session.getAttribute("user"));      
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher("index.html");
+            if(session != null && session.getAttribute("user") != null){
+                out.print("<h4>You are logged in as " + session.getAttribute("user"));    
+                RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
                 rd.include(request,response);
-                
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                rd.include(request,response);              
             }
         } finally {
             out.close();
