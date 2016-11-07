@@ -47,7 +47,7 @@ public class Third extends HttpServlet {
                     && message != null && !message.isEmpty()){
                 //Create class object and use to send mail via sendgrid
                 Third sender = new Third();
-                out.print(sender.sendMail(name, email, message));
+                sender.sendMail(name, email, message);
 
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
@@ -66,7 +66,7 @@ public class Third extends HttpServlet {
      * @param message the content of the email 
      * @throws IOException if an I/O error occurs
      */
-    public String sendMail(String name, String email, String message) throws IOException{    
+    public void sendMail(String name, String email, String message) throws IOException{    
         //Set email parameters
         Email from = new Email("jane.contactform@gmail.com");
         from.setName("Jane");
@@ -108,6 +108,16 @@ public class Third extends HttpServlet {
                 throw ex;
               }
             
+            //Insert mail into database
+            query = " INSERT into emails (email_field, subject_field, message)" 
+                    + " values (?, ?, ?)";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, email);
+            preparedStmt.setString(2, subject);
+            preparedStmt.setString(3, message);
+            preparedStmt.execute();
+            conn.close();
+            
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -115,8 +125,6 @@ public class Third extends HttpServlet {
             //Handle errors for Class.forName
             e.printStackTrace();
         }
-        //Remove this later
-        return "end";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
