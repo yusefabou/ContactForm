@@ -48,7 +48,8 @@ public class Third extends HttpServlet {
                 //Create class object and use to send mail via sendgrid
                 Third sender = new Third();
                 sender.sendMail(name, email, message);
-
+                RequestDispatcher rd = request.getRequestDispatcher("emails.jsp");
+                rd.include(request,response);
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
                 rd.include(request,response);

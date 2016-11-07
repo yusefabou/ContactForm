@@ -21,5 +21,6 @@
             <input type="submit" value="Send"/><input type="reset">
             
         </form>
+        <a href="emails.jsp">List of Emails</a>
     </body>
 </html>
