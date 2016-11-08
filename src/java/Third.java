@@ -34,6 +34,11 @@ public class Third extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
+        //Get session credentials
+        HttpSession session = request.getSession(false);
+        String username = (String)(session.getAttribute("username"));
+        String password = (String)(session.getAttribute("password"));        
+        
         //Store the input data from the contact form
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -47,7 +52,7 @@ public class Third extends HttpServlet {
                     && message != null && !message.isEmpty()){
                 //Create class object and use to send mail via sendgrid
                 Third sender = new Third();
-                sender.sendMail(name, email, message);
+                sender.sendMail(name, email, message, username, password);
                 RequestDispatcher rd = request.getRequestDispatcher("emails.jsp");
                 rd.include(request,response);
             } else {
@@ -65,9 +70,12 @@ public class Third extends HttpServlet {
      * @param name the person to send the email to/the subject header
      * @param email the email address to which the mail is directed
      * @param message the content of the email 
+     * @param username the login user
+     * @param password the login password
      * @throws IOException if an I/O error occurs
      */
-    public void sendMail(String name, String email, String message) throws IOException{    
+    public void sendMail(String name, String email, String message, 
+            String username, String password) throws IOException{    
         //Set email parameters
         Email from = new Email("jane.contactform@gmail.com");
         from.setName("Jane");
@@ -83,7 +91,7 @@ public class Third extends HttpServlet {
             String myDriver = "com.mysql.jdbc.Driver";
             String myURL = "jdbc:mysql://contactformdb.csw5ig1hapkg.us-west-1.rds.amazonaws.com:3306/ContactFormDB?zeroDateTimeBehavior=convertToNull";
             Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myURL, "yusef", "abouremeleh");
+            Connection conn = DriverManager.getConnection(myURL, username, password);
             Statement stmt = conn.createStatement();
 
             //Retrieve SendGrid API Key from database

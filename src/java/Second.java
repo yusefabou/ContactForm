@@ -36,8 +36,8 @@ public class Second extends HttpServlet {
         HttpSession session = request.getSession(false);
         
         try {
-            if(session != null && session.getAttribute("user") != null){
-                out.print("<h4>You are logged in as " + session.getAttribute("user"));    
+            if(session != null && session.getAttribute("username") != null){
+                out.print("<h4>You are logged in as " + session.getAttribute("username"));    
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
                 rd.include(request,response);
             } else {

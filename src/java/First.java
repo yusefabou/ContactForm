@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
+import java.util.Map;
 
 /**
  *
@@ -32,12 +33,30 @@ public class First extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
+        //Retrieve user-submitted username and password
         String uname = request.getParameter("uname");
         String pword = request.getParameter("pword");
+        
+        //Retrieve legitimate username and password from server
+        String env_vars = System.getenv("JAVA_OPTS");
+        String[] varArr = env_vars.split("(=)|( )");
+        String username = "";
+        String password = "";
+        for(int i=0; i < varArr.length; i++){
+            if(varArr[i].contains("USERNAME"))
+                username = varArr[i+1];
+            if(varArr[i].contains("PASSWORD"))
+                password = varArr[i+1];
+            username = username.replace("\"", "").trim();
+            password = password.replace("\"", "").trim();        
+        }
+         
         try {
-            if(uname.equalsIgnoreCase("admin") && pword.equalsIgnoreCase("admin")){
+            if(uname.equals(username) && pword.equals(password)){
                 HttpSession session = request.getSession();
-                session.setAttribute("user", uname);
+                session.setAttribute("username", username);
+                session.setAttribute("password", password);
                 RequestDispatcher rd = request.getRequestDispatcher("Second");
                 rd.forward(request,response);           
             } else {

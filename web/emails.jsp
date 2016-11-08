@@ -4,6 +4,8 @@
     Author     : Yusef
 --%>
 <%@ page import="java.sql.*" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,10 +23,11 @@
             </tr>
             <% 
             try {
+                //Get session credentials
+                String username = (String)(session.getAttribute("username"));
+                String password = (String)(session.getAttribute("password"));  
                 Class.forName("com.mysql.jdbc.Driver");
                 String url="jdbc:mysql://contactformdb.csw5ig1hapkg.us-west-1.rds.amazonaws.com:3306/ContactFormDB?zeroDateTimeBehavior=convertToNull";
-                String username="yusef";
-                String password="abouremeleh";
                 String query="SELECT * FROM emails";
                 Connection conn=DriverManager.getConnection(url,username,password);
                 Statement stmt=conn.createStatement();
