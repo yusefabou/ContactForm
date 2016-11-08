@@ -52,6 +52,6 @@
                 e.printStackTrace();
             }
         %>
-        
+        <a href="form.jsp">Contact Form</a>
     </body>
 </html>

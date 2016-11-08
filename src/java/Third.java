@@ -54,7 +54,7 @@ public class Third extends HttpServlet {
                 Third sender = new Third();
                 sender.sendMail(name, email, message, username, password);
                 RequestDispatcher rd = request.getRequestDispatcher("emails.jsp");
-                rd.include(request,response);
+                rd.forward(request,response);
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
                 rd.include(request,response);

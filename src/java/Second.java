@@ -39,7 +39,7 @@ public class Second extends HttpServlet {
             if(session != null && session.getAttribute("username") != null){
                 out.print("<h4>You are logged in as " + session.getAttribute("username"));    
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
-                rd.include(request,response);
+                rd.forward(request,response);
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
                 rd.include(request,response);              
