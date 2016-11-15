@@ -2,6 +2,7 @@
     Document   : emails
     Created on : Nov 7, 2016, 3:01:36 PM
     Author     : Yusef
+    Description: Displays a list of e-mails that have been submitted.
 --%>
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
@@ -26,12 +27,16 @@
                 //Get session credentials
                 String username = (String)(session.getAttribute("username"));
                 String password = (String)(session.getAttribute("password"));  
+                
+                //Connect to database
                 Class.forName("com.mysql.jdbc.Driver");
                 String url="jdbc:mysql://contactformdb.csw5ig1hapkg.us-west-1.rds.amazonaws.com:3306/ContactFormDB?zeroDateTimeBehavior=convertToNull";
                 String query="SELECT * FROM emails";
                 Connection conn=DriverManager.getConnection(url,username,password);
                 Statement stmt=conn.createStatement();
                 ResultSet rs=stmt.executeQuery(query);
+                
+                //Retrieve and display all e-mails in a table
                 while(rs.next())
                 {
                     %>
@@ -45,6 +50,7 @@
             %>
         </table>
         <%
+            //Close all conections
             rs.close();
             stmt.close();
             conn.close();

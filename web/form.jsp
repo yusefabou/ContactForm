@@ -2,6 +2,9 @@
     Document   : form
     Created on : Nov 6, 2016, 5:16:13 PM
     Author     : Yusef
+    Description: Displays the Contact Form. Includes fields for name, email,
+                 and message
+                 
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

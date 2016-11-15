@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * The Third class handles data provided by the Contact Form.
+ * @author Yusef
  */
 
 import java.io.IOException;
@@ -14,15 +13,13 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 import com.sendgrid.*;
 import java.sql.*;
-/**
- *
- * @author Yusef
- */
+
 public class Third extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. The purpose is to send an e-mail once the Contact Form is filled
+     * out and to direct the page to a list of e-mails once done. 
      *
      * @param request servlet request
      * @param response servlet response
@@ -46,16 +43,18 @@ public class Third extends HttpServlet {
         
         try {
             //Ensure that no field is left empty
-            //TODO: Find way to determine incorrect emails
             if(name != null && !name.isEmpty() 
                     && email != null && !email.isEmpty() 
                     && message != null && !message.isEmpty()){
+                
                 //Create class object and use to send mail via sendgrid
                 Third sender = new Third();
                 sender.sendMail(name, email, message, username, password);
                 RequestDispatcher rd = request.getRequestDispatcher("emails.jsp");
                 rd.forward(request,response);
+                
             } else {
+                //Send user back to the form page if contact form fields are left blank
                 RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
                 rd.include(request,response);
                 }
@@ -65,7 +64,8 @@ public class Third extends HttpServlet {
     }
     
     /**
-     * Sends an email message to the given email
+     * Sends an e-mail message to the provided e-mail address and stores the 
+     * e-mail in a mySQL database.
      *
      * @param name the person to send the email to/the subject header
      * @param email the email address to which the mail is directed
@@ -75,7 +75,8 @@ public class Third extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     public void sendMail(String name, String email, String message, 
-            String username, String password) throws IOException{    
+            String username, String password) throws IOException{ 
+        
         //Set email parameters
         Email from = new Email("jane.contactform@gmail.com");
         from.setName("Jane");

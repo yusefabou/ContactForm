@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/** 
+ * The Second class handles data provided by the First class.
+ * @author Yusef
  */
 
 import java.io.IOException;
@@ -13,15 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 
-/** 
- *
- * @author Yusef
- */
 public class Second extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. If a session has been created, directs user to the Contact Form.
+     * Otherwise brings user back to login screen.
      *
      * @param request servlet request
      * @param response servlet response
@@ -35,6 +31,7 @@ public class Second extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         
+        //Display username and send user to Contact Form if session is created.
         try {
             if(session != null && session.getAttribute("username") != null){
                 out.print("<h4>You are logged in as " + session.getAttribute("username"));    

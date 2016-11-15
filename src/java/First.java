@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * The First class handles the request given by the login form/index page 
+ * @author Yusef
  */
 
 import java.io.IOException;
@@ -14,15 +13,11 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 import java.util.Map;
 
-/**
- *
- * @author Yusef
- */
 public class First extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. Determines if login information is correct.
      *
      * @param request servlet request
      * @param response servlet response
@@ -51,7 +46,10 @@ public class First extends HttpServlet {
             username = username.replace("\"", "").trim();
             password = password.replace("\"", "").trim();        
         }
-         
+        
+        //Determine if submitted username and password are correct. If so,
+        //create session and direct data to Second.java. If not, direct page 
+        //back to login form.
         try {
             if(uname.equals(username) && pword.equals(password)){
                 HttpSession session = request.getSession();

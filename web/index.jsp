@@ -2,6 +2,8 @@
     Document   : index
     Created on : Nov 6, 2016, 10:41:35 AM
     Author     : Yusef
+    Description: The login form. Provides fields to enter the username and 
+                 password
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
